@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>اعتماد التقارير</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 8px;
+      text-align: center;
+    }
+    button {
+      margin: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>التقارير المستلمة</h2>
+    <div id="reports"></div>
+  </div>
+
+  <script>
+    function loadReports() {
+      const reports = JSON.parse(localStorage.getItem("reports")) || [];
+      if (reports.length === 0) {
+        document.getElementById("reports").innerHTML = "<p>لا توجد تقارير حتى الآن.</p>";
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>مختص المنطقة</th>
+              <th>المنطقة</th>
+              <th>الفرع</th>
+ <th>اسم الموظف</th>
+              <th>نوع الملاحظة</th>
+              <th>المبلغ</th>
+              <th>البيان</th>
+              <th>التوصيات</th>
+              <th>اعتماد</th>
+              <th>رفض</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      reports.forEach((r, i) => {
+        html += `
+          <tr>
+            <td>r.mukhtas</td>
+            <td>{r.region}</td>
+            <td>r.branch</td>
+            <td>{r.employee}</td>
+            <td>r.note</td>
+            <td>{r.amount}</td>
+            <td>r.details</td>
+            <td>{r.recommendation}</td>
+            <td><button onclick="approve(i)">✅</button></td>
+            <td><button onclick="reject({i})">❌</button></td>
+          </tr>
+        `;
+      });
+
+      html += "</tbody></table>";
+      document.getElementById("reports").innerHTML = html;
+    }
+
+    function approve(index) {
+      alert("تم اعتماد التقرير رقم " + (index + 1));
+    }
+
+    function reject(index) {
+      alert("تم رفض التقرير رقم " + (index + 1));
+    }
+
+    loadReports();
+  </script>
+</body>
+</html>
+```
